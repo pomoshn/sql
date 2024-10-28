@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple SQL Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Register</h2>
+    <form id="registerForm">
+        <label for="reg_username">Username:</label>
+        <input type="text" id="reg_username" name="reg_username" required>
+        <label for="reg_password">Password:</label>
+        <input type="password" id="reg_password" name="reg_password" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="log_username">Username:</label>
+        <input type="text" id="log_username" name="log_username" required>
+        <label for="log_password">Password:</label>
+        <input type="password" id="log_password" name="log_password" required>
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let username = document.getElementById('reg_username').value;
+        let password = document.getElementById('reg_password').value;
+
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        let userExists = users.some(user => user.username === username);
+
+        if (!userExists) {
+            users.push({ username: username, password: password });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registration successful');
+        } else {
+            alert('Username already exists');
+        }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let username = document.getElementById('log_username').value;
+        let password = document.getElementById('log_password').value;
+
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        let validUser = users.find(user => user.username === username && user.password === password);
+
+        if (validUser) {
+            alert('Login successful');
+        } else {
+            alert('Invalid credentials');
+        }
+    });
+</script>
+</body>
+</html>
